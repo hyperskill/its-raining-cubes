@@ -9,7 +9,7 @@ public class FallingBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("CreatePrefab", 1.0f, 100.0f);
+        InvokeRepeating("CreatePrefab", 0f, 1.0f);
     }
 
     //Update is called once per frame

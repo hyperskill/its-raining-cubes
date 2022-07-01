@@ -8,5 +8,7 @@ public class PlatformBehaviour : MonoBehaviour
     void Update()
     {
         transform.position = new Vector3(Mathf.Clamp(transform.position.x + Time.deltaTime * Input.GetAxisRaw("Horizontal"), -5.0f, 5.0f), transform.position.y, transform.position.z);
+
+        // Debug.Log(Time.deltaTime);
     }
 }
