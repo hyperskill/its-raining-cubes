@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - FallingCube
+  - OkLeft
+  - OkRight
+  - LoseLeft
+  - LoseRight
   layers:
   - Default
   - TransparentFX

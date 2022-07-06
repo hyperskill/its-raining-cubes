@@ -10,4 +10,17 @@ public class RotationBehaviour : MonoBehaviour
     {
         transform.Rotate(Vector3.down, rotationRate * Time.deltaTime);
     }
+
+    // void OnCollisionEnter(Collision collision) {
+    //     GameObject OkLeft = GameObject.Find("OkLeft");
+    //     GameObject OkRight = GameObject.Find("OkRight");
+    //     Debug.Log(OkLeft.transform.position);
+    //     Debug.Log(OkRight.transform.position);
+    //     Debug.Log(collision.gameObject.transform.position);
+        
+    //     Debug.Log(Vector3.Distance(OkLeft.transform.position, collision.gameObject.transform.position));
+    //     Debug.Log(Vector3.Distance(OkRight.transform.position, collision.gameObject.transform.position));
+        
+    //     Debug.Log("Seperator");
+    // }
 }

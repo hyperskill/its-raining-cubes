@@ -169,5 +169,6 @@ public class C_SpawnTest
         {
             Assert.Fail("\"FallingCube\" objects should be continuously rotating");
         }
+        PMHelper.TurnCollisions(true);
     }
 }

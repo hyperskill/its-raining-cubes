@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 402419910}
   m_Layer: 0
   m_Name: OkLeft
-  m_TagString: Untagged
+  m_TagString: OkLeft
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 525886976}
   m_Layer: 0
   m_Name: LoseRight
-  m_TagString: Untagged
+  m_TagString: LoseRight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -733,7 +733,7 @@ GameObject:
   - component: {fileID: 1377682210}
   m_Layer: 0
   m_Name: OkRight
-  m_TagString: Untagged
+  m_TagString: OkRight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -922,7 +922,7 @@ GameObject:
   - component: {fileID: 1893244210}
   m_Layer: 0
   m_Name: LoseLeft
-  m_TagString: Untagged
+  m_TagString: LoseLeft
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

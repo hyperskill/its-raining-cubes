@@ -142,4 +142,25 @@ public static class PMHelper
         
         return true;
     }
+
+    public static void TurnCollisions(bool on)
+    {
+        List<LayerMask> ids = new List<LayerMask>();
+        for (int i = 0; i < 32; i++)
+        {
+            if (LayerMask.LayerToName(i) != "")
+            {
+                ids.Add(i);
+            }
+        }
+
+        foreach (int id1 in ids)
+        {
+            foreach (int id2 in ids)
+            {
+                Physics2D.IgnoreLayerCollision(id1,id2,!on);
+                Physics.IgnoreLayerCollision(id1,id2,!on);
+            }
+        }
+    }
 }

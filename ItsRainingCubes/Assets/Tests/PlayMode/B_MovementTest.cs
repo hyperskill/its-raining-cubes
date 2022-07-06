@@ -17,6 +17,7 @@ public class B_MovementTest
     [UnityTest, Order(0)]
     public IEnumerator CheckMovementLeft()
     {
+        PMHelper.TurnCollisions(false);
         SceneManager.LoadScene("Game");
         Time.timeScale = 40;
         yield return null;
