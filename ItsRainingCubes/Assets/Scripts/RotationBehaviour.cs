@@ -5,24 +5,9 @@ using UnityEngine;
 public class RotationBehaviour : MonoBehaviour
 {
     public float rotationRate = 100f;
-    private bool rotateBody = true;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    // private bool rotateBody = true;
     void Update()
     {
-        if (transform != null && rotateBody == true)
-        {
-            transform.Rotate(Vector3.down, rotationRate * Time.deltaTime);
-        }
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        rotateBody = false;
+        transform.Rotate(Vector3.down, rotationRate * Time.deltaTime);
     }
 }

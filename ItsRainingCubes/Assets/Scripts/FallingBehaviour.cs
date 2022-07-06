@@ -6,16 +6,9 @@ public class FallingBehaviour : MonoBehaviour
 {
     public GameObject cubePrefab;
 
-    // Start is called before the first frame update
     void Start()
     {
         InvokeRepeating("CreatePrefab", 0f, 1.0f);
-    }
-
-    //Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void CreatePrefab()
