@@ -14,7 +14,7 @@ public class D_PlayLogicTest
     public IEnumerator CheckDestroying()
     {
         SceneManager.LoadScene("Game");
-        Time.timeScale = 40;
+        Time.timeScale = 1;
         yield return null;
 
         GameObject cube = GameObject.FindWithTag("FallingCube");
@@ -110,6 +110,8 @@ public class D_PlayLogicTest
         GameObject.Destroy(GameObject.Find("Platform"));
         GameObject.Destroy(GameObject.Find("Floor"));
         yield return null;
+
+        Time.timeScale = 40;
 
         yield return new WaitForSeconds(4);
 

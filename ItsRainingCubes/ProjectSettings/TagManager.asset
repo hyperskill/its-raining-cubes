@@ -9,6 +9,8 @@ TagManager:
   - OkRight
   - LoseLeft
   - LoseRight
+  - Canvas
+  - Score
   layers:
   - Default
   - TransparentFX
