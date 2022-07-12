@@ -14,7 +14,7 @@ public class D_PlayLogicTest
     public IEnumerator CheckDestroying()
     {
         SceneManager.LoadScene("Game");
-        Time.timeScale = 1;
+        Time.timeScale = 0.5f;
         yield return null;
 
         GameObject cube = GameObject.FindWithTag("FallingCube");
@@ -61,8 +61,9 @@ public class D_PlayLogicTest
         OkRight.transform.position = okRightWas;
         
         Floor.transform.position = cube.transform.position;
-        yield return null;
-        yield return null;
+        // yield return null;
+        // yield return null;
+        yield return new WaitUntil(() => cube==null);
         if (curScene!=SceneManager.GetActiveScene())
             Assert.Fail("Scene should not be reloaded, when \"FallingCube\"'s objects collide with the \"Floor\"");
         if (!Floor)
@@ -81,8 +82,9 @@ public class D_PlayLogicTest
         yield return null;
         
         LoseLeft.transform.position = cube.transform.position;
-        yield return null;
-        yield return null;
+        // yield return null;
+        // yield return null;
+        yield return new WaitUntil(() => curScene!=SceneManager.GetActiveScene());
         if (curScene==SceneManager.GetActiveScene())
             Assert.Fail("Scene should be reloaded, when \"FallingCube\"'s objects collide with \"Lose*\" objects");
 
@@ -93,7 +95,8 @@ public class D_PlayLogicTest
         curScene = SceneManager.GetActiveScene();
         
         LoseRight = GameObject.Find("LoseRight");
-        yield return null;
+        // yield return null;
+        yield return new WaitUntil(() => curScene!=SceneManager.GetActiveScene());
         
         LoseRight.transform.position = cube.transform.position;
         yield return null;

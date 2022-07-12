@@ -19,7 +19,7 @@ public class E_ScoreTest
     public IEnumerator CheckCorrect()
     {
         SceneManager.LoadScene("Game");
-        Time.timeScale = 20;
+        Time.timeScale = 10;
         yield return null;
         
         //Check existence
@@ -85,19 +85,31 @@ public class E_ScoreTest
         yield return null;
         Vector3 wasFloor = Floor.transform.position;
         GameObject cube;
+        // for (int i = 0; i < 5; i++)
+        // {
+        //      cube = GameObject.FindWithTag("FallingCube");
+        //     Floor.transform.position = cube.transform.position;
+        //     yield return null;
+        //     yield return null;
+        //     Floor.transform.position = wasFloor;
+        //     if (text.text!=(i+1).ToString())
+        //     {
+        //         Assert.Fail("Score text field not changing, or changing not properly");
+        //     }
+
+        //     yield return new WaitForSeconds(1);
+        // }
         for (int i = 0; i < 5; i++)
         {
-             cube = GameObject.FindWithTag("FallingCube");
+            cube = GameObject.FindWithTag("FallingCube");
             Floor.transform.position = cube.transform.position;
-            yield return null;
-            yield return null;
+            yield return new WaitUntil(() => cube == null);
             Floor.transform.position = wasFloor;
             if (text.text!=(i+1).ToString())
             {
                 Assert.Fail("Score text field not changing, or changing not properly");
             }
-
-            yield return new WaitForSeconds(1);
+            yield return new WaitUntil(() => GameObject.FindWithTag("FallingCube") != null);
         }
         //Check correct score decreasing with reloaded scene
         LoseLeft = GameObject.Find("LoseLeft");
@@ -129,19 +141,32 @@ public class E_ScoreTest
         Floor = GameObject.Find("Floor");
         yield return null;
         wasFloor = Floor.transform.position;
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     cube = GameObject.FindWithTag("FallingCube");
+        //     Floor.transform.position = cube.transform.position;
+        //     yield return null;
+        //     yield return null;
+        //     Floor.transform.position = wasFloor;
+        //     if (text.text!=(i+1).ToString())
+        //     {
+        //         Assert.Fail("Score text field not changing, or changing not properly after player loses");
+        //     }
+
+        //     yield return new WaitForSeconds(1);
+        // }
+
         for (int i = 0; i < 5; i++)
         {
             cube = GameObject.FindWithTag("FallingCube");
             Floor.transform.position = cube.transform.position;
-            yield return null;
-            yield return null;
+            yield return new WaitUntil(() => cube == null);
             Floor.transform.position = wasFloor;
             if (text.text!=(i+1).ToString())
             {
                 Assert.Fail("Score text field not changing, or changing not properly after player loses");
             }
-
-            yield return new WaitForSeconds(1);
+            yield return new WaitUntil(() => GameObject.FindWithTag("FallingCube") != null);
         }
     }
 }
