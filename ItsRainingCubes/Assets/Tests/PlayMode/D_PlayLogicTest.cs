@@ -95,12 +95,13 @@ public class D_PlayLogicTest
         curScene = SceneManager.GetActiveScene();
         
         LoseRight = GameObject.Find("LoseRight");
-        // yield return null;
-        yield return new WaitUntil(() => curScene!=SceneManager.GetActiveScene());
+        yield return null;
+        // yield return new WaitUntil(() => curScene!=SceneManager.GetActiveScene());
         
         LoseRight.transform.position = cube.transform.position;
-        yield return null;
-        yield return null;
+        // yield return null;
+        // yield return null;
+        yield return new WaitUntil(() => curScene!=SceneManager.GetActiveScene());
         if (curScene==SceneManager.GetActiveScene())
             Assert.Fail("Scene should be reloaded, when \"FallingCube\"'s objects collide with \"Lose*\" objects");
         
