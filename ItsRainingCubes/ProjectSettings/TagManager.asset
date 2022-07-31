@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - FallingCube
+  - OkLeft
+  - OkRight
+  - LoseLeft
+  - LoseRight
+  - Canvas
+  - Score
   layers:
   - Default
   - TransparentFX
