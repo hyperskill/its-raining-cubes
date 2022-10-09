@@ -1,0 +1,10 @@
+{
+  "name": "com.hyperskill.tests-for-its-raining-cubes",
+  "version": "1.0.0",
+  "displayName": "ItsRainingCubesTests",
+  "description": "Tests for It's Raining Cubes project",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "type": "tests",
+  "hideInEditor": true
+}

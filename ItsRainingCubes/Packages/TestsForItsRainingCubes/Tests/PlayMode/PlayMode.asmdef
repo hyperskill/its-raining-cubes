@@ -2,9 +2,9 @@
     "name": "PlayMode",
     "rootNamespace": "",
     "references": [
-        "Scripts",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
+        "hyperskill.hs-test-unity.Runtime",
         "InputScripts"
     ],
     "includePlatforms": [],

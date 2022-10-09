@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class A_ObjectTest
+[Description("The cube is the sole working tool for creation"), Category("1")]
+public class Stage1_Tests
 {
     private GameObject Platform,
         LoseLeft,
@@ -31,31 +32,31 @@ public class A_ObjectTest
         yield return null;
         
         //Check objects Exist 
-        Floor = PMHelper.Exist("Floor");
+        Floor = GameObject.Find("Floor");
         if(!Floor)
             Assert.Fail("There should be a \"Floor\" object on scene");
-        Wall = PMHelper.Exist("Wall");
+        Wall = GameObject.Find("Wall");
         if(!Wall)
             Assert.Fail("There should be a \"Wall\" object on scene");
-        Platform = PMHelper.Exist("Platform");
+        Platform = GameObject.Find("Platform");
         if(!Platform)
             Assert.Fail("There should be a \"Platform\" object on scene");
-        LoseLeft = PMHelper.Exist("LoseLeft");
+        LoseLeft = GameObject.Find("LoseLeft");
         if(!LoseLeft)
             Assert.Fail("There should be a \"LoseLeft\" object on scene");
-        OkLeft = PMHelper.Exist("OkLeft");
+        OkLeft = GameObject.Find("OkLeft");
         if(!OkLeft)
             Assert.Fail("There should be a \"OkLeft\" object on scene");
-        LoseRight = PMHelper.Exist("LoseRight");
+        LoseRight = GameObject.Find("LoseRight");
         if(!LoseRight)
             Assert.Fail("There should be a \"LoseRight\" object on scene");
-        OkRight = PMHelper.Exist("OkRight");
+        OkRight = GameObject.Find("OkRight");
         if(!OkRight)
             Assert.Fail("There should be a \"OkRight\" object on scene");
-        GameManager = PMHelper.Exist("GameManager");
+        GameManager = GameObject.Find("GameManager");
         if(!GameManager)
             Assert.Fail("There should be a \"GameManager\" object on scene");
-        MainCamera = PMHelper.Exist("Main Camera");
+        MainCamera = GameObject.Find("Main Camera");
         if(!MainCamera)
             Assert.Fail("There should be a camera, named \"MainCamera\" object on scene");
         
@@ -210,12 +211,12 @@ public class A_ObjectTest
 
         Vector3 direction= -(MainCamera.transform.position - LoseLeft.transform.position).normalized;;
 
-        if(PMHelper.RaycastFront(MainCamera.transform.position,direction,1 << 16).collider.gameObject==Wall)
+        if(PMHelper.RaycastFront3D(MainCamera.transform.position,direction,1 << 16).collider.gameObject==Wall)
             Assert.Fail("\"Wall\" object should be behind the platform (greater z-axis value)");
-        if(PMHelper.RaycastFront(MainCamera.transform.position,direction,1 << 16).collider.gameObject==Floor)
+        if(PMHelper.RaycastFront3D(MainCamera.transform.position,direction,1 << 16).collider.gameObject==Floor)
             Assert.Fail("\"Floor\" object should be under the platform (less y-axis value)");
         
-        if (PMHelper.RaycastFront(MainCamera.transform.position, direction, 1 << 16).normal != Vector3.up)
+        if (PMHelper.RaycastFront3D(MainCamera.transform.position, direction, 1 << 16).normal != Vector3.up)
         {
             Assert.Fail("Platform should be placed lower (less y-axis) or/and be wider (greater x-axis) and not be rotated, " +
                         "so that the camera would see much more of it's top face, not the border ones");
@@ -226,7 +227,7 @@ public class A_ObjectTest
             Assert.Fail("\"Floor\" object should be in front of \"Camera\" object (their x-axis value should be the same)");
         }
         
-        if (PMHelper.RaycastFront(MainCamera.transform.position, direction, 1 << 16).normal != Vector3.up)
+        if (PMHelper.RaycastFront3D(MainCamera.transform.position, direction, 1 << 16).normal != Vector3.up)
             Assert.Fail("\"Floor\" should be placed lower (less y-axis) or/and be wider (greater x-axis) and not be rotated, " +
                         "so that the camera would see much more of it's top face, not the border ones");
         
@@ -235,19 +236,19 @@ public class A_ObjectTest
         OkLeft.layer = okLeftWasLayer;
         OkRight.layer = okRightWasLayer;
         
-        RaycastHit hit = PMHelper.RaycastFront(LoseLeft.transform.position, Vector3.forward, 1 << 16);
+        RaycastHit hit = PMHelper.RaycastFront3D(LoseLeft.transform.position, Vector3.forward, 1 << 16);
         if(!(hit.collider!=null && hit.collider.gameObject==Wall))
             Assert.Fail("\"Wall\" object should be wider (greater x-axis) and behind the platform (not colliding with it)," +
                         " platform objects should be sliding by the wall");
-        hit = PMHelper.RaycastFront(LoseRight.transform.position, Vector3.forward, 1 << 16);
+        hit = PMHelper.RaycastFront3D(LoseRight.transform.position, Vector3.forward, 1 << 16);
         if (!(hit.collider != null && hit.collider.gameObject == Wall))
             Assert.Fail("\"Wall\" object should be wider (greater x-axis) and behind the platform (not colliding with it)," +
                         " platform objects should be sliding by the wall");
-        hit = PMHelper.RaycastFront(LoseLeft.transform.position, Vector3.down, 1 << 16);
+        hit = PMHelper.RaycastFront3D(LoseLeft.transform.position, Vector3.down, 1 << 16);
         if(!(hit.collider!=null && hit.collider.gameObject==Floor))
             Assert.Fail("\"Floor\" object should be wider (greater x-axis) and under the platform (not colliding with it)," +
                         " platform objects should be sliding over the floor");
-        hit = PMHelper.RaycastFront(LoseLeft.transform.position, Vector3.down, 1 << 16);
+        hit = PMHelper.RaycastFront3D(LoseLeft.transform.position, Vector3.down, 1 << 16);
         if(!(hit.collider!=null && hit.collider.gameObject==Floor))
             Assert.Fail("\"Floor\" object should be wider (greater x-axis) and under the platform (not colliding with it)," +
                         " platform objects should be sliding over the floor");
