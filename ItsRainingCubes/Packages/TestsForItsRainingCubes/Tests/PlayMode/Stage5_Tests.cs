@@ -15,45 +15,65 @@ public class Stage5_Tests
     public GameObject LoseLeft;
     public GameObject Floor;
     private Text text;
-    
-    
+    private LayerMask testLayer;
+
+
     [UnityTest, Order(0)]
     public IEnumerator CheckCorrect()
     {
+        PMHelper.TurnCollisions(false);
+        Time.timeScale = 10;
+        testLayer = LayerMask.NameToLayer("Test");
+
         SceneManager.LoadScene("Game");
-        Time.timeScale = 20;
-        yield return null;
-        
+
+        float start = Time.unscaledTime;
+        yield return new WaitUntil(() =>
+            SceneManager.GetActiveScene().name == "Game" || (Time.unscaledTime - start) * Time.timeScale > 1);
+        if (SceneManager.GetActiveScene().name != "Game")
+        {
+            Assert.Fail("\"Game\" scene can't be loaded");
+        }
+
         //Check existence
         canvas = GameObject.Find("Canvas");
         if (!canvas)
             Assert.Fail("There is no canvas in scene named \"Canvas\"");
         score = GameObject.Find("Score");
-        if(!score)
+        if (!score)
             Assert.Fail("There is no score text-field in scene named \"Score\"!");
 
         //Check components
-        if(!PMHelper.Exist<RectTransform>(canvas))
+        if (!PMHelper.Exist<RectTransform>(canvas))
             Assert.Fail("\"Canvas\" object has no component <Rect Transform>");
-        if(!PMHelper.Exist<Canvas>(canvas))
+        Canvas canvasC = PMHelper.Exist<Canvas>(canvas);
+        if (!canvasC)
             Assert.Fail("\"Canvas\" object has no component <Canvas>");
-        if(!PMHelper.Exist<CanvasScaler>(canvas))
+        if (canvasC.renderMode != RenderMode.ScreenSpaceOverlay)
+        {
+            Assert.Fail(
+                "\"Canvas\"' <Canvas> component should have it's Render Mode property set to \"Screen Space - Overlay\"," +
+                " that should have it render in front of everything");
+        }
+
+        if (!PMHelper.Exist<CanvasScaler>(canvas))
             Assert.Fail("\"Canvas\" object has no component <Canvas Scaler>");
-        if(!PMHelper.Exist<GraphicRaycaster>(canvas))
+        if (!PMHelper.Exist<GraphicRaycaster>(canvas))
             Assert.Fail("\"Canvas\" object has no component <Graphic Raycaster>");
 
         RectTransform rect = PMHelper.Exist<RectTransform>(score);
-        text = PMHelper.Exist<Text>(score);
-        if(!rect)
+        if (!rect)
             Assert.Fail("\"Score\" object has no component <Rect Transform>");
-        if (PMHelper.CheckRectTransform(rect))
+        if (!PMHelper.CheckRectTransform(rect))
         {
             Assert.Fail("Anchors of \"Score\"'s <RectTransform> component are incorrect or it's offsets " +
                         "are not equal to zero, might be troubles with different resolutions");
         }
-        if(!text)
+
+        text = PMHelper.Exist<Text>(score);
+        if (!text)
             Assert.Fail("\"Score\" object has no component <Text>");
-        if(!PMHelper.Exist<CanvasRenderer>(score))
+        if (!PMHelper.Exist<CanvasRenderer>(score))
             Assert.Fail("\"Score\" object has no component <Canvas Renderer>");
 
         //Check if score is child of canvas
@@ -62,88 +82,52 @@ public class Stage5_Tests
             Assert.Fail("\"Score\" object should be a child of \"Canvas\" object");
         }
 
-        //Check if by default 0
-        int tmp = -1;
-        try
-        {
-            tmp = int.Parse(text.text);
-        }
-        catch (Exception)
-        {
-            Assert.Fail("\"Score\"'s text value should be initialized as \"0\" by default");
-        }
-
-        if (tmp != 0)
+        //Check if 0 by default
+        if (text.text != "0")
         {
             Assert.Fail("\"Score\"'s text value should be initialized as \"0\" by default");
         }
     }
-    
+
     [UnityTest, Order(1)]
     public IEnumerator CheckScoreChanging()
     {
         //Check correct score increasing
         Floor = GameObject.Find("Floor");
-        yield return null;
-        Vector3 wasFloor = Floor.transform.position;
-        GameObject cube;
-        for (int i = 0; i < 5; i++)
-        {
-             cube = GameObject.FindWithTag("FallingCube");
-            Floor.transform.position = cube.transform.position;
-            yield return null;
-            yield return null;
-            Floor.transform.position = wasFloor;
-            if (text.text!=(i+1).ToString())
-            {
-                Assert.Fail("Score text field not changing, or changing not properly");
-            }
-
-            yield return new WaitForSeconds(1);
-        }
-        //Check correct score decreasing with reloaded scene
         LoseLeft = GameObject.Find("LoseLeft");
-        Scene curScene = SceneManager.GetActiveScene();
-        cube = GameObject.FindWithTag("FallingCube");
-        yield return null;
-        LoseLeft.transform.position = cube.transform.position;
-        yield return null;
-        yield return null;
-        if (curScene == SceneManager.GetActiveScene())
+
+        Physics.IgnoreLayerCollision(testLayer, testLayer, false);
+
+        bool[] testCases = {false, true, false, true, true, false, false, true, true, true, true, false};
+        int score = 0;
+        GameObject cubeTemplate = GameObject.FindWithTag("FallingCube");
+        foreach (bool b in testCases)
         {
-            Assert.Fail("Scene is not being reloaded, when \"FallingCube\" object is colliding with \"Lose*\" objects");
-        }
-        
-        score = GameObject.Find("Score");
-        text = PMHelper.Exist<Text>(score);
-        
-        yield return null;
-        if (!score || !text)
-        {
-            Assert.Fail();
-        }
-        if (text.text!="0")
-        {
-            Assert.Fail("Score text field not changing to \"0\" if player loses!");
-        }
-        
-        //Check correct score increasing after scene is reloaded
-        Floor = GameObject.Find("Floor");
-        yield return null;
-        wasFloor = Floor.transform.position;
-        for (int i = 0; i < 5; i++)
-        {
-            cube = GameObject.FindWithTag("FallingCube");
-            Floor.transform.position = cube.transform.position;
-            yield return null;
-            yield return null;
-            Floor.transform.position = wasFloor;
-            if (text.text!=(i+1).ToString())
+            GameObject colliding = b ? Floor : LoseLeft;
+            GameObject cube = GameObject.Instantiate(cubeTemplate);
+            float start = Time.unscaledTime;
+            yield return new WaitUntil(() =>
+                cube || (Time.unscaledTime - start) * Time.timeScale > 1);
+
+            LayerMask beforeLayer = colliding.layer;
+            colliding.layer = testLayer;
+            cube.layer = testLayer;
+            cube.transform.position = colliding.transform.position;
+
+            start = Time.unscaledTime;
+            yield return new WaitUntil(() =>
+                !cube || (Time.unscaledTime - start) * Time.timeScale > 1);
+
+            score = b ? score + 1 : 0;
+            if (text.text != score.ToString())
             {
-                Assert.Fail("Score text field not changing, or changing not properly after player loses");
+                if (b)
+                    Assert.Fail("Score text field not changing, or changing not properly");
+                else
+                    Assert.Fail("Score text field should change to \"0\" if player loses");
             }
 
-            yield return new WaitForSeconds(1);
+            colliding.layer = beforeLayer;
         }
     }
 }
