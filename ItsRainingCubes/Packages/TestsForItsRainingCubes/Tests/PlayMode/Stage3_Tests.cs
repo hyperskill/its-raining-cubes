@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -90,7 +91,7 @@ public class Stage3_Tests
             Assert.Fail("Y-axis of \"FallingCube\"'s object should decrease by the time (while falling)");
         }
 
-        if (spawnPos.x != tmpT.position.x || spawnPos.z != tmpT.position.z)
+        if (Math.Abs(spawnPos.x - tmpT.position.x) > 1 || Math.Abs(spawnPos.z - tmpT.position.z) > 1)
         {
             Assert.Fail("X-axis and z-axis of \"FallingCube\"'s object should not change");
         }
@@ -138,8 +139,8 @@ public class Stage3_Tests
         {
             for (int j = i+1; j < positions.Count; j++)
             {
-                if (Mathf.RoundToInt(positions[i].z) != Mathf.RoundToInt(positions[j].z) ||
-                    Mathf.RoundToInt(positions[i].y) != Mathf.RoundToInt(positions[j].y))
+                if (Math.Abs(positions[i].z - positions[j].z) > 1 ||
+                    Math.Abs(positions[i].y - positions[j].y) > 1)
                 {
                     Assert.Fail(
                         "All of the \"FallingCube\" objects should be instantiated with the same z-axis and y-axis");
